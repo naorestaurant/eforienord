@@ -4,82 +4,138 @@
   <meta charset="UTF-8" />
   <title>Restaurant NAO - Eforie Nord</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      font-family: 'Arial', sans-serif;
-      color: black;
-    }
-    body {
+      font-family: 'Poppins', sans-serif;
+      color: white;
       background: url('fundal.jpg') no-repeat center center fixed;
       background-size: cover;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Suprapunere pentru lizibilitate */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.3); /* întunecă puțin fundalul */
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      height: 100%;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      position: relative;
       text-align: center;
+      padding: 0 20px;
     }
+
     .logo {
       position: absolute;
-      top: 20px;
-      left: 20px;
-      font-size: 24px;
-      font-weight: bold;
-      color: black;
+      top: 30px;
+      left: 30px;
+      font-size: 28px;
+      font-weight: 700;
+      text-shadow: 1px 1px 6px rgba(0,0,0,0.7);
     }
+
     .btn {
-      padding: 18px 40px;
-      font-size: 1.3em;
+      padding: 20px 50px;
+      font-size: 1.4em;
       font-weight: 700;
       color: white;
       background: linear-gradient(135deg, #ff416c, #ff4b2b);
       border: none;
-      border-radius: 30px;
-      box-shadow: 0 8px 15px rgba(255, 75, 43, 0.4);
+      border-radius: 35px;
+      box-shadow: 0 10px 20px rgba(255, 75, 43, 0.5);
       cursor: pointer;
       text-decoration: none;
-      transition: all 0.3s ease;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
+      transition: all 0.4s ease;
       user-select: none;
+      position: relative;
+      overflow: hidden;
     }
+
+    .btn::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: rgba(255,255,255,0.2);
+      transform: rotate(25deg);
+      transition: all 0.7s ease;
+      pointer-events: none;
+    }
+
+    .btn:hover::before {
+      left: 150%;
+    }
+
     .btn:hover {
-      background: linear-gradient(135deg, #ff4b2b, #ff416c);
-      box-shadow: 0 12px 20px rgba(255, 75, 43, 0.6);
-      transform: translateY(-3px);
+      box-shadow: 0 15px 25px rgba(255, 75, 43, 0.7);
+      transform: translateY(-4px);
     }
+
     .info {
       position: absolute;
-      bottom: 20px;
-      left: 20px;
-      right: 20px;
-      font-size: 1em;
-      text-align: left;
-      color: black;
+      bottom: 30px;
+      left: 30px;
+      right: 30px;
       display: flex;
       justify-content: space-between;
-      width: calc(100% - 40px);
+      font-size: 1em;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
       flex-wrap: wrap;
+      color: white;
+      gap: 15px;
     }
+
     .info a {
-      color: black;
+      color: #fff;
       text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .btn {
+        padding: 15px 30px;
+        font-size: 1.1em;
+      }
+      .info {
+        flex-direction: column;
+        text-align: center;
+      }
+      .info > div {
+        width: 100%;
+      }
+      .logo {
+        font-size: 22px;
+        top: 20px;
+        left: 20px;
+      }
     }
   </style>
 </head>
 <body>
-
-  <div class="logo">NAO</div>
-
-  <a href="Pink%20and%20Red%20Pattern%20Cocktail%20Menu%20(9)%20(2)%20(1).pdf" class="btn" target="_blank" rel="noopener noreferrer">
-    Vezi Meniul
-  </a>
-
-  <div class="info">
-    <div>📍 Str. Tudor Vladimirescu nr. 22, Eforie Nord</div>
-    <div>📞 WhatsApp: <a href="https://wa.me/40720868444">+40 720 868 444</a></div>
+  <div class="container">
+    <div class="logo">NAO</div>
+    <a href="Pink%20and%20Red%20Pattern%20Cocktail%20Menu%20(9)%20(2)%20(1).pdf" class="btn" target="_blank" rel="noopener noreferrer">Vezi Meniul</a>
+    <div class="info">
+      <div>📍 Str. Tudor Vladimirescu nr. 22, Eforie Nord</div>
+      <div>📞 WhatsApp: <a href="https://wa.me/40720868444">+40 720 868 444</a></div>
+    </div>
   </div>
-
 </body>
 </html>
