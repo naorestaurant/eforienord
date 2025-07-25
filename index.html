@@ -23,7 +23,6 @@
       top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0,0,0,0.15);
       z-index: 0;
-      pointer-events: none;
     }
     .container {
       position: relative;
@@ -33,7 +32,7 @@
       flex-direction: column;
       justify-content: flex-end;
       align-items: center;
-      padding: 20px 15px 130px;
+      padding: 20px 15px 110px; /* ridicat cu 2cm (~20px mai sus) */
       box-sizing: border-box;
     }
     .logo {
@@ -56,19 +55,15 @@
       border-radius: 35px;
       box-shadow: 0 10px 20px rgba(198, 177, 129, 0.5);
       cursor: pointer;
-      letter-spacing: 1.2px;
       transition: all 0.4s ease;
       user-select: none;
-      position: relative;
-      overflow: hidden;
-      margin-top: 0;
-      width: max-content;
       z-index: 2;
     }
     .btn:hover {
       box-shadow: 0 15px 25px rgba(198, 177, 129, 0.7);
       transform: translateY(-4px);
     }
+
     .info {
       position: fixed;
       bottom: 20px;
@@ -105,26 +100,25 @@
       color: #e2cfa4;
       text-decoration: none;
       font-weight: 600;
-      transition: color 0.3s ease;
     }
     .info a:hover {
       color: #ffffff;
       text-decoration: underline;
     }
 
-    /* PDF Viewer Modal */
+    /* PDF Viewer */
     #pdfModal {
       display: none;
       position: fixed;
       top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.85);
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.9);
       z-index: 9999;
+      overflow-y: auto;
       flex-direction: column;
       align-items: center;
-      padding: 10px;
-      box-sizing: border-box;
-      overflow-y: auto;
+      padding: 20px 10px;
     }
     #pdfModal.active {
       display: flex;
@@ -135,8 +129,6 @@
       display: flex;
       justify-content: flex-end;
       margin-bottom: 10px;
-      color: white;
-      user-select: none;
     }
     #pdfControls button {
       background: #e6d3b3;
@@ -159,13 +151,11 @@
       border-radius: 12px;
       box-shadow: 0 0 30px rgba(192, 178, 131, 0.7);
       padding: 10px 0;
-      box-sizing: border-box;
     }
     canvas.pdf-page {
       display: block;
       margin: 10px auto;
       max-width: 100%;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       border-radius: 6px;
     }
 
@@ -183,7 +173,6 @@
         bottom: 10px;
         left: 15px;
         font-size: 0.9em;
-        max-width: 95vw;
       }
       .info .address {
         max-width: 95vw;
@@ -209,39 +198,48 @@
     <div class="address">📍 Str. Tudor Vladimirescu nr. 22, Eforie Nord</div>
   </div>
 
-  <!-- Modal PDF Viewer -->
-  <div id="pdfModal" role="dialog" aria-modal="true" aria-labelledby="pdfTitle" tabindex="-1">
+  <div id="pdfModal">
     <div id="pdfControls">
-      <button id="closePdfBtn" aria-label="Închide meniul">Închide</button>
+      <button id="closePdfBtn">Închide</button>
     </div>
-    <div id="pdfCanvasContainer" tabindex="0" aria-live="polite" aria-atomic="true" aria-relevant="additions"></div>
+    <div id="pdfCanvasContainer"></div>
   </div>
 
-  <!-- PDF.js library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.6.172/pdf.min.js"></script>
   <script>
     const url = 'meniunao.pdf';
-
     const pdfModal = document.getElementById('pdfModal');
     const openPdfBtn = document.getElementById('openPdfBtn');
     const closePdfBtn = document.getElementById('closePdfBtn');
     const pdfCanvasContainer = document.getElementById('pdfCanvasContainer');
 
     let pdfDoc = null;
-    let scale = 1.5;
+    let scale = 1.4;
 
-    function renderPage(pageNum) {
-      return pdfDoc.getPage(pageNum).then(page => {
-        const viewport = page.getViewport({ scale });
-        const canvas = document.createElement('canvas');
-        canvas.className = 'pdf-page';
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
+    function renderAllPages(pdf) {
+      pdfCanvasContainer.innerHTML = '';
+      for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+        pdf.getPage(pageNum).then(page => {
+          const viewport = page.getViewport({ scale });
+          const canvas = document.createElement('canvas');
+          canvas.className = 'pdf-page';
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
 
-        const ctx = canvas.getContext('2d');
-        const renderContext = {
-          canvasContext: ctx,
-          viewport: viewport
-        };
+          const context = canvas.getContext('2d');
+          const renderContext = {
+            canvasContext: context,
+            viewport: viewport
+          };
 
-        return page.render(render
+          page.render(renderContext);
+          pdfCanvasContainer.appendChild(canvas);
+        });
+      }
+    }
+
+    openPdfBtn.addEventListener('click', () => {
+      pdfjsLib.getDocument(url).promise.then(pdf => {
+        pdfDoc = pdf;
+        renderAllPages(pdfDoc);
+        pdfModal.classList.add
