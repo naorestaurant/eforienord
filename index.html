@@ -4,9 +4,6 @@
   <meta charset="UTF-8" />
   <title>Restaurant NAO - Eforie Nord</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Descoperă meniul Restaurantului NAO din Eforie Nord." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="icon" href="favicon.ico" />
   <style>
@@ -22,7 +19,6 @@
       position: relative;
     }
 
-    /* Fundal elegant - gradient subtile */
     body::before {
       content: '';
       position: fixed;
@@ -102,20 +98,26 @@
       color: #f8f8f8;
       font-weight: 400;
       z-index: 1;
-      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
     }
 
     .info div {
-      margin: 4px 0;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
+    .info .address {
+      font-size: 0.9em;
+      opacity: 0.9;
+    }
+
     .info img.whatsapp-icon {
       width: 18px;
       height: 18px;
-      vertical-align: middle;
     }
 
     .info a {
@@ -141,7 +143,6 @@
       }
     }
 
-    /* Responsive */
     @media (max-width: 480px) {
       .btn {
         padding: 15px 30px;
@@ -153,9 +154,12 @@
         left: 20px;
       }
       .info {
-        font-size: 0.95em;
+        font-size: 0.9em;
         left: 20px;
         right: 20px;
+      }
+      .info .address {
+        font-size: 0.85em;
       }
     }
   </style>
@@ -164,12 +168,13 @@
   <div class="container">
     <div class="logo">NAO</div>
     <a href="meniul-restaurant-nao.pdf" class="btn" target="_blank" rel="noopener noreferrer">Vezi Meniul</a>
+
     <div class="info">
-      <div>📍 <strong>Str. Tudor Vladimirescu nr. 22</strong>, Eforie Nord</div>
       <div>
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="whatsapp-icon">
-        WhatsApp: <a href="https://wa.me/40720868444">+40 720 868 444</a>
+        <span>WhatsApp:</span> <a href="https://wa.me/40720868444">+40 720 868 444</a>
       </div>
+      <div class="address">📍 Str. Tudor Vladimirescu nr. 22, Eforie Nord</div>
     </div>
   </div>
 </body>
