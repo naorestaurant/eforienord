@@ -4,7 +4,11 @@
   <meta charset="UTF-8" />
   <title>Restaurant NAO - Eforie Nord</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Descoperă meniul Restaurantului NAO din Eforie Nord. Gusturi rafinate, atmosferă relaxantă, cocktailuri deosebite." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.ico" />
   <style>
     html, body {
       margin: 0;
@@ -14,16 +18,16 @@
       color: white;
       background: url('fundal.jpg') no-repeat center center fixed;
       background-size: cover;
-      position: relative;
       overflow: hidden;
+      position: relative;
     }
 
-    /* Suprapunere pentru lizibilitate */
+    /* Suprapunere elegantă */
     body::before {
       content: '';
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.3); /* întunecă puțin fundalul */
+      background: linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.25));
       z-index: 0;
     }
 
@@ -48,6 +52,14 @@
       text-shadow: 1px 1px 6px rgba(0,0,0,0.7);
     }
 
+    .subtitle {
+      font-size: 1.2em;
+      margin-bottom: 40px;
+      color: #f0f0f0;
+      text-shadow: 1px 1px 6px rgba(0,0,0,0.6);
+      max-width: 600px;
+    }
+
     .btn {
       padding: 20px 50px;
       font-size: 1.4em;
@@ -64,6 +76,7 @@
       user-select: none;
       position: relative;
       overflow: hidden;
+      animation: fadeInUp 1s ease-out;
     }
 
     .btn::before {
@@ -90,21 +103,45 @@
 
     .info {
       position: absolute;
-      bottom: 30px;
-      left: 30px;
-      right: 30px;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
-      justify-content: space-between;
-      font-size: 1em;
+      flex-direction: column;
+      align-items: center;
+      font-size: 1.05em;
       text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
-      flex-wrap: wrap;
-      color: white;
-      gap: 15px;
+      color: #f8f8f8;
+      line-height: 1.6;
+      font-weight: 400;
+      z-index: 1;
+    }
+
+    .info div {
+      margin: 4px 0;
     }
 
     .info a {
-      color: #fff;
+      color: #ffd6d6;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .info a:hover {
+      color: #ffffff;
       text-decoration: underline;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* Responsive */
@@ -113,17 +150,19 @@
         padding: 15px 30px;
         font-size: 1.1em;
       }
-      .info {
-        flex-direction: column;
-        text-align: center;
-      }
-      .info > div {
-        width: 100%;
-      }
       .logo {
         font-size: 22px;
         top: 20px;
         left: 20px;
+      }
+      .subtitle {
+        font-size: 1em;
+        margin-top: 30px;
+      }
+      .info {
+        font-size: 0.95em;
+        padding: 0 10px;
+        text-align: center;
       }
     }
   </style>
@@ -131,9 +170,10 @@
 <body>
   <div class="container">
     <div class="logo">NAO</div>
-    <a href="Pink%20and%20Red%20Pattern%20Cocktail%20Menu%20(9)%20(2)%20(1).pdf" class="btn" target="_blank" rel="noopener noreferrer">Vezi Meniul</a>
+    <p class="subtitle">Gusturi fine pe malul mării • Bucătărie mediteraneană & cocktails</p>
+    <a href="meniul-restaurant-nao.pdf" class="btn" target="_blank" rel="noopener noreferrer">Vezi Meniul</a>
     <div class="info">
-      <div>📍 Str. Tudor Vladimirescu nr. 22, Eforie Nord</div>
+      <div>📍 <strong>Str. Tudor Vladimirescu nr. 22</strong>, Eforie Nord</div>
       <div>📞 WhatsApp: <a href="https://wa.me/40720868444">+40 720 868 444</a></div>
     </div>
   </div>
