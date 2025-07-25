@@ -242,4 +242,17 @@
       pdfjsLib.getDocument(url).promise.then(pdf => {
         pdfDoc = pdf;
         renderAllPages(pdfDoc);
-        pdfModal.classList.add
+        pdfModal.classList.add('active');
+      }).catch(err => {
+        alert("Eroare la încărcarea meniului PDF. Verifică dacă fișierul 'meniunao.pdf' există.");
+        console.error(err);
+      });
+    });
+
+    closePdfBtn.addEventListener('click', () => {
+      pdfModal.classList.remove('active');
+      pdfCanvasContainer.innerHTML = '';
+    });
+  </script>
+</body>
+</html>
