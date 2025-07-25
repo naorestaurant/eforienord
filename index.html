@@ -17,6 +17,7 @@
       position: relative;
       overflow-x: hidden;
     }
+
     body::before {
       content: '';
       position: fixed;
@@ -24,28 +25,34 @@
       background: rgba(0,0,0,0.15);
       z-index: 0;
     }
+
     .container {
       position: relative;
       z-index: 1;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
       justify-content: flex-end;
       align-items: center;
-      padding: 20px 15px 110px; /* ridicat cu 2cm (~20px mai sus) */
+      padding: 0 15px;
       box-sizing: border-box;
     }
+
     .logo {
-      position: absolute;
+      position: fixed;
       top: 30px;
       left: 30px;
       font-size: 56px;
       font-weight: 700;
       text-shadow: 1px 1px 8px rgba(0,0,0,0.8);
       user-select: none;
-      z-index: 2;
+      z-index: 999;
     }
+
     .btn {
+      position: absolute;
+      bottom: 160px; /* ridicat vizibil față de marginea de jos */
+      left: 50%;
+      transform: translateX(-50%);
       padding: 20px 50px;
       font-size: 1.4em;
       font-weight: 700;
@@ -59,9 +66,10 @@
       user-select: none;
       z-index: 2;
     }
+
     .btn:hover {
       box-shadow: 0 15px 25px rgba(198, 177, 129, 0.7);
-      transform: translateY(-4px);
+      transform: translate(-50%, -4px);
     }
 
     .info {
@@ -79,6 +87,7 @@
       user-select: none;
       max-width: 95vw;
     }
+
     .info div {
       display: flex;
       align-items: center;
@@ -87,42 +96,47 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
     .info .address {
       font-size: 0.9em;
       opacity: 0.9;
       max-width: 350px;
     }
+
     .info img.whatsapp-icon {
       width: 20px;
       height: 20px;
     }
+
     .info a {
       color: #e2cfa4;
       text-decoration: none;
       font-weight: 600;
     }
+
     .info a:hover {
       color: #ffffff;
       text-decoration: underline;
     }
 
-    /* PDF Viewer */
     #pdfModal {
       display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0,0,0,0.9);
+      background: rgba(0,0,0,0.95);
       z-index: 9999;
       overflow-y: auto;
       flex-direction: column;
       align-items: center;
       padding: 20px 10px;
     }
+
     #pdfModal.active {
       display: flex;
     }
+
     #pdfControls {
       width: 100%;
       max-width: 1200px;
@@ -130,6 +144,7 @@
       justify-content: flex-end;
       margin-bottom: 10px;
     }
+
     #pdfControls button {
       background: #e6d3b3;
       border: none;
@@ -141,9 +156,11 @@
       transition: background 0.3s ease;
       font-size: 1em;
     }
+
     #pdfControls button:hover {
       background: #c7b48a;
     }
+
     #pdfCanvasContainer {
       width: 100%;
       max-width: 1200px;
@@ -152,6 +169,7 @@
       box-shadow: 0 0 30px rgba(192, 178, 131, 0.7);
       padding: 10px 0;
     }
+
     canvas.pdf-page {
       display: block;
       margin: 10px auto;
@@ -164,20 +182,24 @@
         padding: 15px 30px;
         font-size: 1.1em;
       }
+
       .logo {
         font-size: 42px;
         top: 20px;
         left: 20px;
       }
+
       .info {
         bottom: 10px;
         left: 15px;
         font-size: 0.9em;
       }
+
       .info .address {
         max-width: 95vw;
         white-space: normal;
       }
+
       #pdfControls {
         justify-content: center;
       }
