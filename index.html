@@ -13,16 +13,14 @@
       overflow-x: hidden;
       background: url('fundal.jpg') no-repeat center center fixed;
       background-size: cover;
-      filter: brightness(1.15) contrast(1.25);
       position: relative;
     }
 
-    /* Overlay galbui cald peste fundal */
     body::before {
       content: '';
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(255, 223, 130, 0.25);
+      background: rgba(0,0,0,0.3);
       z-index: 0;
       pointer-events: none;
     }
@@ -64,7 +62,7 @@
       user-select: none;
       position: relative;
       overflow: hidden;
-      margin-top: 140px; /* distanță suficientă de logo */
+      margin-top: 140px;
       width: max-content;
       z-index: 2;
     }
@@ -185,7 +183,7 @@
 
     <button class="btn" id="showMenuBtn">Vezi Meniul</button>
 
-    <iframe id="pdfViewer" src="meniul-restaurant-nao.pdf" title="Meniul Restaurant NAO"></iframe>
+    <iframe id="pdfViewer" src="meniunao.pdf" title="Meniul Restaurant NAO"></iframe>
 
     <div class="info">
       <div>
