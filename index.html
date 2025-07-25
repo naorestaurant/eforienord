@@ -7,7 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     html, body {
-      margin: 0; padding: 0; height: 100%;
+      margin: 0;
+      padding: 0;
+      height: 100%;
       font-family: 'Poppins', sans-serif;
       color: white;
       background: url('fundal.jpg') no-repeat center center fixed;
@@ -29,8 +31,9 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      justify-content: flex-end;
       align-items: center;
-      padding: 20px 15px 80px;
+      padding: 20px 15px 130px;
       box-sizing: border-box;
     }
     .logo {
@@ -47,38 +50,23 @@
       padding: 20px 50px;
       font-size: 1.4em;
       font-weight: 700;
-      color: white;
-      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+      color: #4a3c1a;
+      background: linear-gradient(135deg, #e6d3b3, #c7b48a);
       border: none;
       border-radius: 35px;
-      box-shadow: 0 10px 20px rgba(255, 75, 43, 0.5);
+      box-shadow: 0 10px 20px rgba(198, 177, 129, 0.5);
       cursor: pointer;
       letter-spacing: 1.2px;
       transition: all 0.4s ease;
       user-select: none;
       position: relative;
       overflow: hidden;
-      margin-top: 140px;
+      margin-top: 0;
       width: max-content;
       z-index: 2;
     }
-    .btn::before {
-      content: "";
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: rgba(255,255,255,0.2);
-      transform: rotate(25deg);
-      transition: all 0.7s ease;
-      pointer-events: none;
-    }
-    .btn:hover::before {
-      left: 150%;
-    }
     .btn:hover {
-      box-shadow: 0 15px 25px rgba(255, 75, 43, 0.7);
+      box-shadow: 0 15px 25px rgba(198, 177, 129, 0.7);
       transform: translateY(-4px);
     }
     .info {
@@ -114,7 +102,7 @@
       height: 20px;
     }
     .info a {
-      color: #ffd6d6;
+      color: #e2cfa4;
       text-decoration: none;
       font-weight: 600;
       transition: color 0.3s ease;
@@ -136,6 +124,7 @@
       align-items: center;
       padding: 10px;
       box-sizing: border-box;
+      overflow-y: auto;
     }
     #pdfModal.active {
       display: flex;
@@ -144,39 +133,42 @@
       width: 100%;
       max-width: 1200px;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      justify-content: flex-end;
       margin-bottom: 10px;
       color: white;
       user-select: none;
     }
     #pdfControls button {
-      background: #ff4b2b;
+      background: #e6d3b3;
       border: none;
-      padding: 10px 20px;
+      padding: 10px 25px;
       font-weight: 700;
       border-radius: 30px;
       cursor: pointer;
-      color: white;
+      color: #4a3c1a;
       transition: background 0.3s ease;
+      font-size: 1em;
     }
     #pdfControls button:hover {
-      background: #ff416c;
+      background: #c7b48a;
     }
     #pdfCanvasContainer {
-      flex-grow: 1;
       width: 100%;
       max-width: 1200px;
-      overflow: auto;
       background: white;
       border-radius: 12px;
-      box-shadow: 0 0 30px rgba(255,75,43,0.7);
+      box-shadow: 0 0 30px rgba(192, 178, 131, 0.7);
+      padding: 10px 0;
+      box-sizing: border-box;
     }
-    #pdfCanvas {
+    canvas.pdf-page {
       display: block;
-      margin: 0 auto;
+      margin: 10px auto;
       max-width: 100%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      border-radius: 6px;
     }
+
     @media (max-width: 480px) {
       .btn {
         padding: 15px 30px;
@@ -198,11 +190,7 @@
         white-space: normal;
       }
       #pdfControls {
-        flex-direction: column;
-        gap: 8px;
-      }
-      #pdfControls button {
-        width: 100%;
+        justify-content: center;
       }
     }
   </style>
@@ -222,17 +210,11 @@
   </div>
 
   <!-- Modal PDF Viewer -->
-  <div id="pdfModal" role="dialog" aria-modal="true" aria-labelledby="pdfTitle">
+  <div id="pdfModal" role="dialog" aria-modal="true" aria-labelledby="pdfTitle" tabindex="-1">
     <div id="pdfControls">
       <button id="closePdfBtn" aria-label="Închide meniul">Închide</button>
-      <div>
-        <button id="zoomOutBtn" aria-label="Micșorează zoom">-</button>
-        <button id="zoomInBtn" aria-label="Mărește zoom">+</button>
-      </div>
     </div>
-    <div id="pdfCanvasContainer">
-      <canvas id="pdfCanvas"></canvas>
-    </div>
+    <div id="pdfCanvasContainer" tabindex="0" aria-live="polite" aria-atomic="true" aria-relevant="additions"></div>
   </div>
 
   <!-- PDF.js library -->
@@ -243,70 +225,23 @@
     const pdfModal = document.getElementById('pdfModal');
     const openPdfBtn = document.getElementById('openPdfBtn');
     const closePdfBtn = document.getElementById('closePdfBtn');
-    const zoomInBtn = document.getElementById('zoomInBtn');
-    const zoomOutBtn = document.getElementById('zoomOutBtn');
-    const canvas = document.getElementById('pdfCanvas');
-    const ctx = canvas.getContext('2d');
+    const pdfCanvasContainer = document.getElementById('pdfCanvasContainer');
 
     let pdfDoc = null;
-    let currentPage = 1;
     let scale = 1.5;
 
-    function renderPage(num) {
-      pdfDoc.getPage(num).then(page => {
+    function renderPage(pageNum) {
+      return pdfDoc.getPage(pageNum).then(page => {
         const viewport = page.getViewport({ scale });
+        const canvas = document.createElement('canvas');
+        canvas.className = 'pdf-page';
         canvas.height = viewport.height;
         canvas.width = viewport.width;
 
+        const ctx = canvas.getContext('2d');
         const renderContext = {
           canvasContext: ctx,
           viewport: viewport
         };
-        page.render(renderContext);
-      });
-    }
 
-    openPdfBtn.addEventListener('click', () => {
-      pdfModal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-
-      if (!pdfDoc) {
-        pdfjsLib.getDocument(url).promise.then(pdf => {
-          pdfDoc = pdf;
-          renderPage(currentPage);
-        }).catch(err => {
-          alert('Eroare la încărcarea meniului PDF.');
-          pdfModal.classList.remove('active');
-          document.body.style.overflow = 'auto';
-          console.error(err);
-        });
-      } else {
-        renderPage(currentPage);
-      }
-    });
-
-    closePdfBtn.addEventListener('click', () => {
-      pdfModal.classList.remove('active');
-      document.body.style.overflow = 'auto';
-    });
-
-    zoomInBtn.addEventListener('click', () => {
-      scale = Math.min(scale + 0.2, 3);
-      renderPage(currentPage);
-    });
-
-    zoomOutBtn.addEventListener('click', () => {
-      scale = Math.max(scale - 0.2, 0.5);
-      renderPage(currentPage);
-    });
-
-    // Close modal on ESC
-    window.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && pdfModal.classList.contains('active')) {
-        pdfModal.classList.remove('active');
-        document.body.style.overflow = 'auto';
-      }
-    });
-  </script>
-</body>
-</html>
+        return page.render(render
