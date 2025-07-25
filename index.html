@@ -10,17 +10,18 @@
       margin: 0; padding: 0; height: 100%;
       font-family: 'Poppins', sans-serif;
       color: white;
-      overflow-x: hidden;
       background: url('fundal.jpg') no-repeat center center fixed;
       background-size: cover;
       position: relative;
+      overflow-x: hidden;
     }
 
+    /* Fundal suprapus pentru lizibilitate - mai deschis */
     body::before {
       content: '';
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.3);
+      background: rgba(0,0,0,0.15);
       z-index: 0;
       pointer-events: none;
     }
@@ -89,17 +90,45 @@
       transform: translateY(-4px);
     }
 
-    #pdfViewer {
-      width: 90vw;
-      max-width: 900px;
-      height: 600px;
-      border: 2px solid #ff4b2b;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(255,75,43,0.6);
-      margin-top: 20px;
+    /* Modal full screen pentru PDF */
+    #modal {
       display: none;
-      user-select: text;
-      z-index: 2;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.85);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    #modal iframe {
+      width: 90vw;
+      height: 90vh;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(255,75,43,0.7);
+      background: white;
+    }
+
+    #modal .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 2.5em;
+      color: white;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.3s ease;
+      z-index: 10000;
+    }
+
+    #modal .close-btn:hover {
+      color: #ff4b2b;
     }
 
     .info {
@@ -115,21 +144,21 @@
       flex-direction: column;
       gap: 6px;
       user-select: none;
-      max-width: 90vw;
+      max-width: 95vw;
     }
 
     .info div {
       display: flex;
       align-items: center;
       gap: 8px;
+      white-space: nowrap; /* for single line */
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .info .address {
       font-size: 0.9em;
       opacity: 0.9;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       max-width: 350px;
     }
 
@@ -161,9 +190,6 @@
         top: 20px;
         left: 20px;
       }
-      #pdfViewer {
-        height: 400px;
-      }
       .info {
         bottom: 10px;
         left: 15px;
@@ -171,7 +197,7 @@
         max-width: 95vw;
       }
       .info .address {
-        max-width: 200px;
+        max-width: 95vw;
         white-space: normal;
       }
     }
@@ -182,30 +208,43 @@
     <div class="logo">NAO</div>
 
     <button class="btn" id="showMenuBtn">Vezi Meniul</button>
+  </div>
 
-    <iframe id="pdfViewer" src="meniunao.pdf" title="Meniul Restaurant NAO"></iframe>
+  <!-- Modal pentru PDF -->
+  <div id="modal">
+    <button class="close-btn" id="closeModal">&times;</button>
+    <iframe src="meniunao.pdf" title="Meniul Restaurant NAO"></iframe>
+  </div>
 
-    <div class="info">
-      <div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="whatsapp-icon" />
-        <span>WhatsApp:</span> <a href="https://wa.me/40720868444" target="_blank" rel="noopener noreferrer">+40 720 868 444</a>
-      </div>
-      <div class="address">📍 Str. Tudor Vladimirescu nr. 22, Eforie Nord</div>
+  <div class="info">
+    <div>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="whatsapp-icon" />
+      <span>WhatsApp:</span> <a href="https://wa.me/40720868444" target="_blank" rel="noopener noreferrer">+40 720 868 444</a>
     </div>
+    <div class="address">📍 Str. Tudor Vladimirescu nr. 22, Eforie Nord</div>
   </div>
 
   <script>
-    const btn = document.getElementById('showMenuBtn');
-    const pdf = document.getElementById('pdfViewer');
+    const showBtn = document.getElementById('showMenuBtn');
+    const modal = document.getElementById('modal');
+    const closeBtn = document.getElementById('closeModal');
 
-    btn.addEventListener('click', () => {
-      if (pdf.style.display === 'none' || pdf.style.display === '') {
-        pdf.style.display = 'block';
-        btn.textContent = 'Ascunde Meniul';
-        pdf.scrollIntoView({behavior: 'smooth'});
-      } else {
-        pdf.style.display = 'none';
-        btn.textContent = 'Vezi Meniul';
+    showBtn.addEventListener('click', () => {
+      modal.style.display = 'flex';
+      // Optional: blocare scroll pe body când modalul este deschis
+      document.body.style.overflow = 'hidden';
+    });
+
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    });
+
+    // Inchidere modal la apasare ESC
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && modal.style.display === 'flex') {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
       }
     });
   </script>
